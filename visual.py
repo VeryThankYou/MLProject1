@@ -1,10 +1,11 @@
 from dataload import *
 import numpy as np
-from matplotlib.pyplot import (figure, subplot, boxplot, title, xticks, ylim, 
-                               show, plot, xlabel, ylabel, yticks, legend)
+from matplotlib.pyplot import (figure, subplot, boxplot, title, xticks, ylim, show, plot, xlabel, ylabel, yticks, legend)
 
-#plt.boxplot(np.log(X))
-#plt.show()
+boxplot(np.log(X))
+show()
+
+
 figure(figsize=(14,7))
 for c in range(C):
     subplot(1,C,c+1)

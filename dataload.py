@@ -33,4 +33,6 @@ y = np.asarray([classDict[value] for value in labels])
 N = len(y)
 M = len(attrnames)
 C = len(classNames)
+print(np.sum(y))
+print(classDict)
 
