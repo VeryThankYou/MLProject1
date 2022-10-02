@@ -8,8 +8,11 @@ for e in l:
     pddata = pddata.drop(pddata.columns[e], axis=1)
 
 
+
 labels = pddata[["HAGRID", "Class"]].to_numpy()
 pddata = pddata.drop(pddata.columns[1], axis=1)
+attrnames = pddata.columns
+attrnames = list(attrnames.delete(0))
 X = pddata.to_numpy()
 X = X[~np.isnan(X).any(axis = 1)]
 idlist = []
@@ -21,15 +24,13 @@ for i, e in enumerate(labels):
             break
     if exists == False:
         idlist.append(i)
+X = np.delete(X, 0, 1)
 labels = np.delete(labels, idlist, 0)
-
-acount = 0
-mcount = 0
-for e in labels:
-    if e[1] == "Aves":
-        acount = acount + 1
-    else:
-        mcount = mcount + 1
-
-print(acount, mcount)
+labels = np.reshape(np.delete(labels, 0, 1), (1, -1))[0]
+classNames = list(set(labels))
+classDict = dict(zip(classNames, range(2)))
+y = np.asarray([classDict[value] for value in labels])
+N = len(y)
+M = len(attrnames)
+C = len(classNames)
 

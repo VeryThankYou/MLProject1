@@ -1,11 +1,11 @@
-import dataload as dl
+from dataload import *
 from scipy.linalg import svd
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 # Subtract mean value from data
-Y = dl.X - np.ones((N,1))*dl.X.mean(axis=0)
+Y = X - np.ones((N,1))*X.mean(axis=0)
 
 # PCA by computing SVD of Y
 U,S,V = svd(Y,full_matrices=False)
@@ -14,7 +14,7 @@ U,S,V = svd(Y,full_matrices=False)
 rho = (S*S) / (S*S).sum() 
 
 threshold = 0.9
-
+print(S)
 # Plot variance explained
 plt.figure()
 plt.plot(range(1,len(rho)+1),rho,'x-')
