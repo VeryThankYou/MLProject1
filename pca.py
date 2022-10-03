@@ -4,7 +4,8 @@ import numpy as np
 from matplotlib.pyplot import (figure, subplot, boxplot, title, xticks, ylim, show, plot, xlabel, ylabel, yticks, legend, grid, bar)
 
 # Subtract mean value from data
-Y = X - np.ones((N,1))*X.mean(axis=0)
+print(np.std(X, 0))
+Y = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.std(X, 0))
 
 # PCA by computing SVD of Y
 U,S,V = svd(Y,full_matrices=False)
@@ -28,7 +29,8 @@ show()
 
 
 # Subtract mean value from data
-Y = X - np.ones((N,1))*X.mean(0)
+Y = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.ones((N,1))*X.std(axis=0))
+
 
 # PCA by computing SVD of Y
 U,S,Vh = svd(Y,full_matrices=False)
@@ -58,21 +60,22 @@ ylabel('PC{0}'.format(j+1))
 # Output result to screen
 show()
 
-Y = X - np.ones((N,1))*X.mean(0)
+Y = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.ones((N,1))*X.std(axis=0))
+
 U,S,Vh = svd(Y,full_matrices=False)
 V=Vh.T
 N,M = X.shape
 
 # We saw in 2.1.3 that the first 3 components explaiend more than 90
 # percent of the variance. Let's look at their coefficients:
-pcs = [0,1,2]
+pcs = [0,1,2,3]
 legendStrs = ['PC'+str(e+1) for e in pcs]
 c = ['r','g','b']
 bw = .2
 r = np.arange(1,M+1)
 for i in pcs:    
     bar(r+i*bw, V[:,i], width=bw)
-xticks(r+bw, attrnames)
+xticks(r+bw, np.arange(0, 8))
 xlabel('Attributes')
 ylabel('Component coefficients')
 legend(legendStrs)
