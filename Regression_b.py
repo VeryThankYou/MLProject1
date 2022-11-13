@@ -22,8 +22,6 @@ N, M = X.shape
 K = 10
 CV_out = model_selection.KFold(n_splits=K,shuffle=True)
 
-outer_results = list()
-
 for train_ix, test_ix in CV_out.split(X):
     # split data 
     X_train, X_test = X[train_ix, :], X[test_ix, :]
@@ -31,17 +29,17 @@ for train_ix, test_ix in CV_out.split(X):
 	# configure the cross-validation procedure 
     CV_inner = model_selection.KFold(n_splits=10, shuffle=True)
 
-    for k, (train_index, test_index) in enumerate(CV_inner.split(X,y)):
+    for k, (train_index, test_index) in enumerate(CV_inner.split(X_train,y_train)):
         print('\nCrossvalidation fold: {0}/{1}'.format(k+1,K))   
     
         # define the model
         # Extract training and test set for current CV fold, 
         # and convert them to PyTorch tensors
-        X_train = torch.Tensor(X[train_index,:] )
-        y_train = torch.Tensor(y[train_index] )
-        X_test = torch.Tensor(X[test_index,:] )
-        y_test = torch.Tensor(y[test_index] )
-        y_train = y_train.reshape(-1, 1)
+        X_train_2 = torch.Tensor(X_train[train_index,:] )
+        y_train_2 = torch.Tensor(y_train[train_index] )
+        X_test_2 = torch.Tensor(X_train[test_index,:] )
+        y_test_2 = torch.Tensor(y_train[test_index] )
+        y_train_2 = y_train.reshape(-1, 1)
 
         n_hidden_units = 1 # number of hidden units in the signle hidden layer
         # The lambda-syntax defines an anonymous function, which is used here to 
@@ -49,7 +47,7 @@ for train_ix, test_ix in CV_out.split(X):
         model = lambda: torch.nn.Sequential(
                     torch.nn.Linear(M, n_hidden_units), #M features to H hiden units
                     # 1st transfer function, either Tanh or ReLU:
-                    torch.nn.Tanh(),                            #torch.nn.ReLU(),
+                    torch.nn.Tanh(), #torch.nn.ReLU(),
                     torch.nn.Linear(n_hidden_units, 1), # H hidden units to 1 output neuron
                     torch.nn.Sigmoid() # final tranfer function
                     )
@@ -57,10 +55,8 @@ for train_ix, test_ix in CV_out.split(X):
         # and see how the network is trained (search for 'def train_neural_net',
         # which is the place the function below is defined)
 
-        # Since we're training a neural network for binary classification, we use a 
-        # binary cross entropy loss (see the help(train_neural_net) for more on
-        # the loss_fn input to the function)
-        loss_fn = torch.nn.BCELoss()
+        
+        loss_fn = torch.nn.MSELoss()
         # Train for a maximum of 10000 steps, or until convergence (see help for the 
         # function train_neural_net() for more on the tolerance/convergence))
         max_iter = 10000
@@ -84,8 +80,8 @@ for train_ix, test_ix in CV_out.split(X):
 
         net, final_loss, learning_curve = train_neural_net(model,
                                                         loss_fn,
-                                                        X=X_train,
-                                                        y=y_train,
+                                                        X=X_train_2,
+                                                        y=y_train_2,
                                                         n_replicates=3,
                                                         max_iter=max_iter)
         
