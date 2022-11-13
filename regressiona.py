@@ -4,6 +4,8 @@ from sklearn import model_selection
 from extrascripts import feature_selector_lr, bmplot
 import numpy as np
 from matplotlib.pylab import figure, subplot, plot, xlabel, ylabel, hist, show, clim, title
+
+# Normalize data
 X = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.std(X, 0))
 
 # Split dataset into features and target vector
