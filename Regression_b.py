@@ -73,7 +73,7 @@ for k, (train_index, test_index) in enumerate(CV.split(X,y)):
     y_train = torch.Tensor(y[train_index] )
     X_test = torch.Tensor(X[test_index,:] )
     y_test = torch.Tensor(y[test_index] )
-    
+    y_train = y_train.reshape(-1, 1)
     # Go to the file 'toolbox_02450.py' in the Tools sub-folder of the toolbox
     # and see how the network is trained (search for 'def train_neural_net',
     # which is the place the function below is defined)
