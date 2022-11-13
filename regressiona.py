@@ -4,7 +4,7 @@ from sklearn import model_selection
 from extrascripts import feature_selector_lr, bmplot
 import numpy as np
 from matplotlib.pylab import figure, subplot, plot, xlabel, ylabel, hist, show, clim, title
-
+from matplotlib import pyplot as plt
 # Normalize data
 X = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.std(X, 0))
 
@@ -127,3 +127,50 @@ else:
     
 show()
 print(X[1, :])
+
+print("Part2")
+
+K = 20
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.75)
+
+# Fit regularized logistic regression model to training data to predict 
+# the type of wine
+lambda_interval = np.logspace(-4, 3, 50)
+train_error_rate = np.zeros(len(lambda_interval))
+test_error_rate = np.zeros(len(lambda_interval))
+coefficient_norm = np.zeros(len(lambda_interval))
+for k in range(0, len(lambda_interval)):
+    mdl = lm.Ridge(alpha=lambda_interval[k])
+    
+    mdl.fit(X_train, y_train)
+
+    y_train_est = mdl.predict(X_train).T
+    y_test_est = mdl.predict(X_test).T
+    
+    train_error_rate[k] = np.sum(np.square(y_train_est - y_train)) / y_train.shape[0]
+    test_error_rate[k] = np.sum(np.square(y_test_est - y_test)) / y_test.shape[0]
+
+    w_est = mdl.coef_[0] 
+    coefficient_norm[k] = np.sqrt(np.sum(w_est**2))
+
+min_error = np.min(test_error_rate)
+opt_lambda_idx = np.argmin(test_error_rate)
+opt_lambda = lambda_interval[opt_lambda_idx]
+
+plt.figure(figsize=(8,8))
+#plt.plot(np.log10(lambda_interval), train_error_rate*100)
+#plt.plot(np.log10(lambda_interval), test_error_rate*100)
+#plt.plot(np.log10(opt_lambda), min_error*100, 'o')
+plt.semilogx(lambda_interval, train_error_rate)
+plt.semilogx(lambda_interval, test_error_rate)
+plt.semilogx(opt_lambda, min_error, 'o')
+plt.text(1e-8, 3, "Minimum test error: " + str(np.round(min_error,2)) + ' % at 1e' + str(np.round(np.log10(opt_lambda),2)))
+plt.xlabel('Regularization strength, (\lambda)$')
+plt.ylabel('Squared error')
+plt.title('Error and regularization strength')
+plt.legend(['Training error','Test error','Test minimum'],loc='upper right')
+plt.grid()
+plt.show()
+
+print(opt_lambda)
+print(test_error_rate[opt_lambda_idx])
