@@ -6,7 +6,6 @@ import numpy as np
 from matplotlib.pylab import figure, subplot, plot, xlabel, ylabel, hist, show, clim, title
 from matplotlib import pyplot as plt
 # Normalize data
-X = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.std(X, 0))
 
 # Split dataset into features and target vector
 life_idx = attrnames.index('Maximum longevity (yrs)')
@@ -14,6 +13,8 @@ y = X[:,life_idx]
 attrnames.pop(7)
 X_cols = list(range(0,life_idx)) + list(range(life_idx+1,len(attrnames)))
 X = X[:,X_cols]
+X = np.divide(X - np.ones((N,1))*X.mean(axis=0), np.std(X, 0))
+
 
 N, M = X.shape
 
@@ -86,13 +87,11 @@ print('\n')
 print('Linear regression without feature selection:\n')
 print('- Training error: {0}'.format(Error_train.mean()))
 print('- Test error:     {0}'.format(Error_test.mean()))
-print('- R^2 train:     {0}'.format((Error_train_nofeatures.sum()-Error_train.sum())/Error_train_nofeatures.sum()))
-print('- R^2 test:     {0}'.format((Error_test_nofeatures.sum()-Error_test.sum())/Error_test_nofeatures.sum()))
+
 print('Linear regression with feature selection:\n')
 print('- Training error: {0}'.format(Error_train_fs.mean()))
 print('- Test error:     {0}'.format(Error_test_fs.mean()))
-print('- R^2 train:     {0}'.format((Error_train_nofeatures.sum()-Error_train_fs.sum())/Error_train_nofeatures.sum()))
-print('- R^2 test:     {0}'.format((Error_test_nofeatures.sum()-Error_test_fs.sum())/Error_test_nofeatures.sum()))
+
 
 figure(k)
 subplot(1,3,2)
@@ -131,11 +130,11 @@ print(X[1, :])
 print("Part2")
 
 K = 20
-X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.75)
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.20)
 
 # Fit regularized logistic regression model to training data to predict 
 # the type of wine
-lambda_interval = np.logspace(-4, 3, 50)
+lambda_interval = np.logspace(-3, 3, 50)
 train_error_rate = np.zeros(len(lambda_interval))
 test_error_rate = np.zeros(len(lambda_interval))
 coefficient_norm = np.zeros(len(lambda_interval))
