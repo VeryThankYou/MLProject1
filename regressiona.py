@@ -1,7 +1,9 @@
 from dataload import *
 import sklearn.linear_model as lm
+from sklearn import model_selection
 import numpy as np
 from matplotlib.pylab import figure, subplot, plot, xlabel, ylabel, hist, show
+from main import feature_selector_lr, bmplot
 
 print(attrnames)
 
