@@ -37,7 +37,6 @@ for k, (train_index, test_index) in enumerate(CV.split(X,y)):
     y_train = y[train_index]
     X_test = X[test_index,:]
     y_test = y[test_index]
-    y_train = y_train.reshape(-1, 1)
 
     # Normalize data
     mu[k, :] = np.mean(X_train, 0)
