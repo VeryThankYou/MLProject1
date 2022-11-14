@@ -58,7 +58,6 @@ for k, (train_index, test_index) in enumerate(CV.split(X,y)):
     y_train = torch.Tensor(y[train_index] )
     X_test = torch.Tensor(X[test_index,:] )
     y_test = torch.Tensor(y[test_index] )
-    y_train = y_train.reshape(-1, 1)
 
     
 
