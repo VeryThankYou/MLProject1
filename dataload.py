@@ -34,6 +34,8 @@ N = len(y)
 M = len(attrnames)
 C = len(classNames)
 
+print(classDict)
+
 #print(np.std(X, 0))
 #print(np.sum(y))
 #print(classDict)
