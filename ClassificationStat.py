@@ -100,9 +100,24 @@ th_KNN_BL = np.mean(rj_KNN_BL) / (np.std(rj_KNN_BL) * np.sqrt(1/(J*K) + rho / (1
 th_LRM_KNN = np.mean(rj_LRM_KNN) / (np.std(rj_LRM_KNN) * np.sqrt(1/(J*K) + rho / (1 - rho)))
 
 
-p_LRM_BL = 2 * t.cdf(- np.abs(th_LRM_BL), df = J - 1)
-p_KNN_BL = 2 * t.cdf(- np.abs(th_KNN_BL), df = J - 1)
-p_LRM_KNN = 2 * t.cdf(- np.abs(th_LRM_KNN), df = J - 1)
+p_LRM_BL = 2 * t.cdf(- np.abs(th_LRM_BL), df = J*K - 1)
+p_KNN_BL = 2 * t.cdf(- np.abs(th_KNN_BL), df = J*K - 1)
+p_LRM_KNN = 2 * t.cdf(- np.abs(th_LRM_KNN), df = J*K - 1)
+
+alpha = 0.05
+sig_LRM_BL = np.sqrt((1 / 100 + 1 / (K - 1)) * np.var(rj_LRM_BL))
+sig_KNN_BL = np.sqrt((1 / 100 + 1 / (K - 1)) * np.var(rj_KNN_BL))
+sig_LRM_KNN = np.sqrt((1 / 100 + 1 / (K - 1)) * np.var(rj_LRM_KNN))
+
+
+conf_int_LRM_BL = [t.ppf(alpha / 2, df = J * K - 1, loc = np.mean(rj_LRM_BL), scale = sig_LRM_BL), t.ppf(1 - alpha / 2, df = J * K - 1, loc = np.mean(rj_LRM_BL), scale = sig_LRM_BL)]
+conf_int_KNN_BL = [t.ppf(alpha / 2, df = J * K - 1, loc = np.mean(rj_KNN_BL), scale = sig_KNN_BL), t.ppf(1 - alpha / 2, df = J * K - 1, loc = np.mean(rj_KNN_BL), scale = sig_KNN_BL)]
+conf_int_LRM_KNN = [t.ppf(alpha / 2, df = J * K - 1, loc = np.mean(rj_LRM_KNN), scale = sig_LRM_KNN), t.ppf(1 - alpha / 2, df = J * K - 1, loc = np.mean(rj_LRM_KNN), scale = sig_LRM_KNN)]
+
 print(p_LRM_BL)
 print(p_KNN_BL)
 print(p_LRM_KNN)
+
+print(conf_int_LRM_BL)
+print(conf_int_KNN_BL)
+print(conf_int_LRM_KNN)
