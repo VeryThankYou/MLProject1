@@ -91,9 +91,9 @@ for i2 in range(J):
 
 
 
-rj_LRM_BL = (Error_test_BL - Error_train_LRM) / nj
-rj_KNN_BL = (Error_test_BL - Error_train_KNN) / nj
-rj_LRM_KNN = (Error_test_KNN - Error_train_LRM) / nj
+rj_LRM_BL = (Error_test_BL - Error_test_LRM) / nj
+rj_KNN_BL = (Error_test_BL - Error_test_KNN) / nj
+rj_LRM_KNN = (Error_test_KNN - Error_test_LRM) / nj
 rho = 1/ K
 th_LRM_BL = np.mean(rj_LRM_BL) / (np.std(rj_LRM_BL) * np.sqrt(1/(J*K) + rho / (1 - rho)))
 th_KNN_BL = np.mean(rj_KNN_BL) / (np.std(rj_KNN_BL) * np.sqrt(1/(J*K) + rho / (1 - rho)))

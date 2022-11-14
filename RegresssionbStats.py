@@ -20,7 +20,7 @@ N, M = X.shape
 
 # K-fold CrossValidation
 
-n_hidden_units = 4
+n_hidden_units = 5
 max_iter = 10000
 
 loss_fn = torch.nn.MSELoss()
@@ -32,11 +32,8 @@ CV = KFold(K, shuffle=True)
 
 LRMComp = 1 / 1000
 
-Error_train_BL = np.empty((K*J,1))
 Error_test_BL = np.empty((K*J,1))
-Error_train_ANN = np.empty((K*J,1))
 Error_test_ANN = np.empty((K*J,1))
-Error_train_LRM = np.empty((K*J,1))
 Error_test_LRM = np.empty((K*J,1))
 nj = np.empty((K*J,1))
 
@@ -108,10 +105,12 @@ for i2 in range(J):
 
 
 
-rj_LRM_BL = (Error_test_BL - Error_train_LRM) / nj
-rj_ANN_BL = (Error_test_BL - Error_train_ANN) / nj
-rj_LRM_ANN = (Error_test_ANN - Error_train_LRM) / nj
+rj_LRM_BL = (Error_test_BL - Error_test_LRM) / nj
+rj_ANN_BL = (Error_test_BL - Error_test_ANN) / nj
+rj_LRM_ANN = (Error_test_ANN - Error_test_LRM) / nj
 rho = 1/ K
+print(rj_ANN_BL)
+print(rj_LRM_BL)
 th_LRM_BL = np.mean(rj_LRM_BL) / (np.std(rj_LRM_BL) * np.sqrt(1/(J*K) + rho / (1 - rho)))
 th_ANN_BL = np.mean(rj_ANN_BL) / (np.std(rj_ANN_BL) * np.sqrt(1/(J*K) + rho / (1 - rho)))
 th_LRM_ANN = np.mean(rj_LRM_ANN) / (np.std(rj_LRM_ANN) * np.sqrt(1/(J*K) + rho / (1 - rho)))
@@ -139,6 +138,3 @@ print(conf_int_LRM_BL)
 print(conf_int_ANN_BL)
 print(conf_int_LRM_ANN)
 
-
-print(Error_test_ANN)
-print(Error_test_LRM)
