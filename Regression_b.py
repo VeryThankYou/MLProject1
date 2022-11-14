@@ -20,17 +20,17 @@ X = X[:,X_cols]
 N, M = X.shape
 
 # K-fold CrossValidation
-K = 10
+K = 5
 CV = model_selection.KFold(n_splits=K,shuffle=True)
-n_hidden_units = range(1,11)
+n_hidden_units = range(1,6)
 
 mu = np.empty((K, M))
 sigma = np.empty((K, M))
 # Do cross-validation:
-errors_out = np.empty((10,1))
+errors_out = np.empty((5,1))
 
 # Chosen hidden unit
-CHU = np.empty((10,1))
+CHU = np.empty((5,1))
 
 loss_fn = torch.nn.MSELoss()
         # Train for a maximum of 10000 steps, or until convergence (see help for the 
