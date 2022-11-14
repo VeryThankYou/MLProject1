@@ -43,7 +43,8 @@ for k, (train_index, test_index) in enumerate(CV.split(X,y)):
 
     X_train = X[train_index,:]
     X_test = X[test_index,:]
-
+    y_train = y[train_index]
+    y_test = y[test_index]
     # Normalize data
     mu[k, :] = np.mean(X_train, 0)
     sigma[k, :] = np.std(X_train, 0)
@@ -54,10 +55,12 @@ for k, (train_index, test_index) in enumerate(CV.split(X,y)):
 
     # Extract training and test set for current CV fold, 
     # and convert them to PyTorch tensors
-    X_train = torch.Tensor(X[train_index,:] )
-    y_train = torch.Tensor(y[train_index] )
-    X_test = torch.Tensor(X[test_index,:] )
-    y_test = torch.Tensor(y[test_index] )
+    X_train_ten = torch.from_numpy(X_train).float()
+    y_train_ten = torch.from_numpy(y_train).float()
+    X_test_ten = torch.from_numpy(X_test).float()
+    y_test_ten = torch.from_numpy(y_test).float()
+    y_test_ten = torch.reshape(y_test_ten, (-1, 1))
+    y_train_ten = torch.reshape(y_train_ten, (-1, 1))
 
     
 
@@ -81,13 +84,13 @@ for k, (train_index, test_index) in enumerate(CV.split(X,y)):
 
         net, final_loss, learning_curve = train_neural_net(model,
                                                         loss_fn,
-                                                        X=X_train,
-                                                        y=y_train,
+                                                        X=X_train_ten,
+                                                        y=y_train_ten,
                                                         n_replicates=3,
                                                         max_iter=max_iter)
-        y_est = net(X_test)
+        y_est = net(X_test_ten)
         print(y_est)
-        error = torch.square(y_test - y_est).sum() / y_test.shape[0]
+        error = torch.square(y_test_ten - y_est).sum() / y_test_ten.shape[0]
         print(error)
 
 
