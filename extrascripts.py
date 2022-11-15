@@ -10,10 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn import model_selection, linear_model
 from matplotlib.pyplot import contourf
 from matplotlib import cm
-from statistics import *
-from similarity import *
-from categoric2numeric import categoric2numeric
-from bin_classifier_ensemble import BinClassifierEnsemble
+
 
 
 def remove_zero_cols(m):
