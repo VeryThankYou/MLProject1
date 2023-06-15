@@ -5,7 +5,6 @@ from sklearn import model_selection
 from extrascripts import feature_selector_lr, train_neural_net, draw_neural_net, visualize_decision_boundary
 import torch
 from dataload import *
-import sklearn.linear_model as lm
 plt.rcParams.update({'font.size': 12})
 
 

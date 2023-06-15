@@ -7,6 +7,7 @@ import torch
 from dataload import *
 import sklearn.linear_model as lm
 
+
 # Split dataset into features and target vector
 life_idx = attrnames.index('Maximum longevity (yrs)')
 y = X[:,life_idx]
